@@ -1,0 +1,241 @@
+GUIA DE COLABORACION PARA AKIRA MOTORS
+======================================
+
+OBJETIVO DEL PROYECTO
+
+Este sitio presenta AKIRA Motors en tres secciones horizontales y una vista
+de listado de motocicletas que se abre al seleccionar una categoria:
+
+1. Inicio / motocicleta AKIRA 1390: presentacion visual y ficha del modelo.
+2. Catalogo: tarjetas visuales para elegir una categoria.
+3. Contacto: maqueta visual del area de contacto.
+4. Motos por categoria: pagina de listado con las motocicletas de la
+   categoria elegida. No es una cuarta diapositiva del recorrido horizontal.
+
+El proyecto debe poder desarrollarse por secciones y luego ensamblarse sin
+que el trabajo de una persona sobrescriba el de otra. Esta guia define los
+limites de cada aporte y el contrato que debe respetar la integracion.
+
+
+MAPA DEL PROYECTO
+
+index.html
+  Documento principal del recorrido horizontal. Contiene Inicio, Catalogo,
+  Contacto, la navegacion entre ellos y las etiquetas que cargan CSS y
+  JavaScript.
+
+categoria.html (pagina pendiente de crear)
+  Plantilla independiente para mostrar las motos de la categoria seleccionada.
+  Se abre desde una tarjeta del Catalogo y no se agrega a #track ni al menu
+  horizontal principal.
+
+assets/css/styles.css
+  Estilos compartidos, estilos de las secciones, responsive y animaciones.
+
+assets/js/main.js
+  Comportamiento compartido: entrada de la moto, desplazamiento horizontal,
+  compresion de las secciones y navegacion con enlaces data-slide.
+
+assets/js/categoria.js (si se necesita)
+  Logica limitada a categoria.html, por ejemplo leer el identificador de
+  categoria de la URL y mostrar el titulo y las motos correspondientes.
+  No reemplaza ni modifica la navegacion horizontal de main.js.
+
+assets/fonts/
+  Fuentes locales AKIRA y Roboto. No dependen de que esten instaladas
+  en el computador de quien visita el sitio.
+
+assets/images/brand/
+  Logotipos de la marca.
+
+assets/images/motos/
+  Imagenes de motocicletas. La imagen akira-1390-hero.png se usa en Inicio;
+  las imagenes de otras motos estan disponibles para futuras tarjetas.
+
+assets/images/references/
+  Material de referencia visual. No asumir que una referencia debe usarse
+  como fondo de la pagina.
+
+GUIA_PROYECTO.txt
+  Estas instrucciones de colaboracion e integracion.
+
+
+RESPONSABILIDADES POR SECCION
+
+INICIO / MOTOCICLETA
+  HTML: dentro de <section id="inicio" class="panel home">.
+  CSS: reglas propias bajo .home o una clase descendiente de .home.
+  JS: no modificar assets/js/main.js para cambios visuales de esta seccion.
+  Mantener el id inicio, la imagen local de la moto y su identificador #moto.
+  La entrada de la moto y la compresion al desplazarse son comportamiento
+  global; cualquier cambio a ese comportamiento debe acordarse con quien
+  integra las secciones.
+
+CATALOGO
+  HTML: dentro de <section id="categorias" class="panel categories">.
+  CSS: reglas propias bajo .categories o sus descendientes.
+  Mantener las tarjetas dentro de .category-grid y conservar los nombres
+  de clase que necesite el volteo (.flip-card, .flip-card-inner,
+  .card-face, .card-front y .card-back).
+  Las imagenes aprobadas se toman de assets/images/motos/. Si una tarjeta
+  aun no tiene imagen, conservar un marcador accesible en vez de una ruta
+  rota.
+
+CONTACTO
+  HTML: dentro de <section id="contacto" class="panel contact">.
+  CSS: reglas propias bajo .contact o sus descendientes.
+  Mantener el id contacto y el contenido dentro de .contact-layout.
+  La seccion actual es una maqueta visual. No agregar envio de formularios,
+  servicios externos ni otras funciones sin una solicitud expresa.
+
+LISTADO DE MOTOS POR CATEGORIA
+  Archivo a crear: categoria.html. Es la pagina independiente que se muestra
+  despues de elegir una tarjeta del Catalogo; hoy aun no existe.
+  CSS: reglas propias bajo .category-page y sus descendientes.
+  Si se requieren estilos separados, crear assets/css/categoria.css y
+  enlazarlo solo desde categoria.html. Si se usa styles.css, limitar las
+  reglas con .category-page.
+  JS opcional: assets/js/categoria.js. Usarlo solo para seleccionar el
+  contenido de categoria solicitado; no duplicar el scroll de main.js.
+  La pagina debe seguir la maqueta de referencia: encabezado de navegacion,
+  bloque superior destacado con nombre de la categoria y una cuadricula
+  visual de motos, organizada en tres columnas en escritorio. Debe mantener
+  la jerarquia visual de la maqueta: barra superior, titulo/identificacion
+  de categoria centrado y tarjetas de producto debajo. Cada tarjeta reserva
+  espacio para la imagen y presenta nombre/modelo y texto breve.
+  En movil, adaptar la cuadricula para que las tarjetas sean legibles.
+  Los iconos de busqueda/carrito que aparezcan en la referencia son solo
+  elementos graficos mientras no se solicite implementar esas funciones.
+  Usar imagenes existentes de assets/images/motos/ cuando correspondan;
+  mantener marcadores accesibles para las motos sin imagen aprobada.
+  No inventar especificaciones, precios ni datos tecnicos.
+  Reutilizar una sola plantilla para las categorias, identificando la
+  categoria elegida mediante un slug estable en la URL:
+  categoria.html?tipo=urbanas, naked, deportivas o adventure.
+  Cada tarjeta actual del Catalogo es un flip-card visual; al integrar esta
+  pagina, hacer que la seleccion de la tarjeta navegue al slug correcto sin
+  perder el comportamiento de volteo al pasar el mouse.
+  No crear una pagina distinta por categoria salvo decision del integrador.
+
+
+CONTRATO COMPARTIDO: NO CAMBIAR POR CUENTA PROPIA
+
+- El orden actual de las secciones es inicio, categorias y contacto.
+- Cada una es un <section class="panel"> dentro de #track.
+- El marco desplazable usa #story, .stage y #track.
+- Los ids inicio, categorias y contacto se usan en navegacion y deben ser
+  unicos y mantenerse sin cambios.
+- Los enlaces de navegacion usan data-slide="0", "1" y "2". Si cambia el
+  numero u orden de secciones, quien integra debe actualizar juntos el
+  menu, el calculo de scroll en assets/js/main.js y el ancho/desplazamiento
+  de .track en assets/css/styles.css.
+- No borrar ni reemplazar el menu, el marco .stage/.track, las secciones
+  vecinas ni los enlaces a CSS/JS al preparar un aporte.
+- No mover archivos de fonts o imagenes ni cambiar sus nombres sin actualizar
+  todas sus referencias.
+- La pagina categoria.html (pendiente de crear) es una vista independiente,
+  no una diapositiva.
+  No aumentar #track ni cambiar la altura del recorrido para agregarla.
+- Las tarjetas de Catalogo son el punto de entrada a categoria.html. El
+  nombre del parametro/slug de categoria debe acordarse con quien integra
+  antes de conectar los enlaces.
+- La pagina categoria.html comparte la identidad visual y recursos del
+  proyecto, pero su CSS y JS deben quedar limitados a esa pagina.
+
+
+FLUJO DE TRABAJO PARA VARIAS PERSONAS O IA
+
+1. Elegir una sola tarea por persona: Inicio, Catalogo, Contacto o Listado
+   de motos por categoria.
+2. Entregar esta guia y pedir expresamente que trabaje solo esa seccion.
+3. Para evitar conflictos, no pedir a cada persona que reescriba el
+   index.html completo ni que modifique directamente el archivo compartido.
+4. Preparar un aporte aislado en una rama de Git o en una copia de trabajo.
+   Si se intercambian archivos en vez de ramas, usar una carpeta temporal
+   llamada entregas/<nombre-seccion>/ con:
+     seccion.html  - solo el <section> de esa seccion, sin html/head/body.
+     seccion.css   - solo las reglas de esa seccion.
+     NOTAS.txt     - recursos nuevos, rutas y cualquier requisito de JS.
+   Para el Listado de motos por categoria, entregar en su lugar:
+     categoria.html - pagina completa independiente (con head/body).
+     categoria.css  - solo estilos limitados a .category-page.
+     NOTAS.txt      - slug acordado, recursos y comportamiento requerido.
+   La carpeta entregas es para intercambiar aportes; el sitio no la carga.
+5. No copiar una pagina completa generada por otra IA dentro de index.html.
+   El responsable de integracion copia unicamente la seccion acordada.
+6. El responsable de integracion revisa el aporte contra este contrato,
+   combina los estilos de las diapositivas en assets/css/styles.css y deja
+   assets/js/main.js para comportamiento realmente compartido. La pagina
+   independiente se integra en categoria.html con sus estilos y logica
+   aislados.
+7. Integrar un aporte a la vez. Despues de cada integracion comprobar las
+   demas secciones y vistas, y eliminar solo duplicados del aporte integrado.
+8. No sobrescribir cambios ajenos ni descartar cambios locales para resolver
+   conflictos. Comparar diferencias y conservar todos los aportes validos.
+
+
+REGLAS DE CSS Y JAVASCRIPT PARA APORTES
+
+- Todas las reglas nuevas deben estar limitadas a la seccion. Ejemplos:
+    .categories .category-grid { ... }
+    .contact .contact-layout { ... }
+    .home .hero-copy { ... }
+- No agregar estilos globales para body, h1, h2, p, img, a, * o :root desde
+  el CSS de una seccion; podrian cambiar las otras secciones.
+- No reutilizar nombres de clases genericos si el estilo solo corresponde
+  a una seccion. Usar el prefijo de seccion o los componentes ya existentes.
+- Mantener los estilos responsive de la seccion dentro de sus reglas media
+  query; comprobar escritorio y movil.
+- Evitar dependencias nuevas, frameworks, scripts externos y fuentes remotas.
+- No agregar listeners globales de scroll ni escribir en #track desde una
+  seccion. El desplazamiento es propiedad compartida de main.js.
+- Si una seccion requiere comportamiento JavaScript, describirlo en
+  NOTAS.txt y proponer el cambio mas pequeno posible. Integrar y probarlo
+  junto con la logica existente, no reemplazar main.js completo.
+- Usar HTML semantico, mantener los ids existentes y proporcionar texto
+  alternativo a imagenes informativas.
+
+
+ENSAMBLADO Y LISTA DE VERIFICACION
+
+Antes de integrar:
+  [ ] El aporte corresponde a una sola seccion.
+  [ ] No reemplaza el documento completo ni incluye menu/marco duplicado.
+  [ ] Las clases nuevas estan limitadas a su seccion.
+  [ ] Los recursos tienen rutas locales existentes.
+
+Despues de integrar:
+  [ ] index.html tiene exactamente una seccion para cada id: inicio,
+      categorias y contacto, en ese orden.
+  [ ] El menu sigue llevando a las tres secciones.
+  [ ] categoria.html existe como pagina independiente, no como diapositiva.
+  [ ] Cada tarjeta del Catalogo abre la categoria correcta con el slug
+      acordado y el listado muestra el nombre y motos de esa categoria.
+  [ ] Se comprobaron al menos los cuatro slugs: urbanas, naked, deportivas
+      y adventure; un slug desconocido no muestra una categoria incorrecta.
+  [ ] El enlace de regreso desde categoria.html devuelve al Catalogo sin
+      romper la navegacion horizontal.
+  [ ] La moto, el logo y las fuentes AKIRA/Roboto cargan localmente.
+  [ ] El catalogo conserva las tarjetas y sus estados de volteo.
+  [ ] El contacto no rompe la maqueta ni el desplazamiento.
+  [ ] La compresion y el desplazamiento horizontal siguen funcionando.
+  [ ] La pagina se reviso en escritorio y movil, sin desbordamiento
+      horizontal accidental.
+  [ ] git diff --check no reporta errores de formato.
+
+
+COMO ABRIR EL SITIO
+
+Abrir la carpeta del proyecto en Visual Studio Code y ejecutar index.html
+con Live Server. Tambien se puede abrir index.html directamente en un
+navegador para una revision visual rapida.
+
+
+RUTAS DE RECURSOS
+
+- Las imagenes se referencian desde index.html con ./assets/images/...
+- Las fuentes se referencian desde assets/css/styles.css con ../fonts/...
+- categoria.html carga recursos desde la raiz con ./assets/...
+- Si se agregan imagenes, guardarlas en assets/images/brand, motos o
+  references segun su uso, y usar nombres descriptivos en minusculas.
+- No borrar assets existentes solo porque una seccion aun no los use.
